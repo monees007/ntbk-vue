@@ -11,22 +11,24 @@
         <v-list-item @click="tap2(item)" v-bind:key v-for="(item,key) in level2"> {{ item }}</v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-navigation-drawer v-model="drawer">
+    <v-navigation-drawer >
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
       <v-list>
         <v-list-item @click="tap3(item)" v-bind:key v-for="(item,key) in level3"> {{ item }}</v-list-item>
       </v-list>      <!--  -->
 
     </v-navigation-drawer>
 
-    <v-app-bar>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-app-bar-title>Application</v-app-bar-title>
-    </v-app-bar>
 
     <v-main>
-      {{ current_path }}
-      <!--  -->
+      <ejs-pdfviewer
+        id="pdfViewer"
+        :resourceUrl="resourceUrl"
+
+        :documentPath="'http://127.0.0.1:5000/get_file'+current_path">
+      </ejs-pdfviewer>
     </v-main>
   </v-app>
 </template>
@@ -34,11 +36,22 @@
 <script setup>
 import {ref} from 'vue'
 
+
 const drawer = ref(null)
 </script>
 
 <script>
+import {
+  PdfViewerComponent, Toolbar, Magnification, Navigation, LinkAnnotation,
+  BookmarkView, ThumbnailView, Print, TextSelection, TextSearch,
+  Annotation, FormDesigner, FormFields, PageOrganizer
+} from '@syncfusion/ej2-vue-pdfviewer';
+
+
 export default {
+  components: {
+    "ejs-pdfviewer": PdfViewerComponent
+  },
   data: () => ({
     drawer: null,
     hierarchy: null,
@@ -49,6 +62,7 @@ export default {
     selected2: null,
     paths: {},
     current_path: '',
+    resourceUrl: 'https://cdn.syncfusion.com/ej2/23.1.43/dist/ej2-pdfviewer-lib',
 
   }),
   mounted() {
@@ -103,7 +117,27 @@ export default {
           console.error('Error:', error);
         });
     }
+  },
+  provide: {
+    PdfViewer: [Toolbar, Magnification, Navigation, LinkAnnotation, BookmarkView, ThumbnailView,
+      Print, TextSelection, TextSearch, Annotation, FormDesigner, FormFields, PageOrganizer]
   }
 
 }
 </script>
+
+<style>
+  @import '../node_modules/@syncfusion/ej2-base/styles/material-dark.css';
+  @import '../node_modules/@syncfusion/ej2-buttons/styles/material-dark.css';
+  @import '../node_modules/@syncfusion/ej2-dropdowns/styles/material-dark.css';
+  @import '../node_modules/@syncfusion/ej2-inputs/styles/material-dark.css';
+  @import '../node_modules/@syncfusion/ej2-navigations/styles/material-dark.css';
+  @import '../node_modules/@syncfusion/ej2-popups/styles/material-dark.css';
+  @import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material-dark.css';
+  @import '../node_modules/@syncfusion/ej2-lists/styles/material-dark.css';
+  @import '../node_modules/@syncfusion/ej2-vue-pdfviewer/styles/material-dark.css';
+
+  .e-pv-main-container{
+    min-height: 100vh !important;
+  }
+</style>
