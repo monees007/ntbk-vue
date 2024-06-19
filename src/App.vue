@@ -25,7 +25,8 @@
     </v-app-bar>
 
     <v-main>
-      {{ current_path }}
+      <div id="adobe-dc-view"></div>
+
       <!--  -->
     </v-main>
   </v-app>
@@ -35,7 +36,9 @@
 import {ref} from 'vue'
 
 const drawer = ref(null)
+
 </script>
+
 
 <script>
 export default {
